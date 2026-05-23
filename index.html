@@ -30,13 +30,14 @@
         
         .btn-parse { background: #e63946; color: white; border: none; padding: 15px 20px; font-size: 18px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 20px; }
         .btn-parse:hover { background: #d62839; }
-
-        /* 개요 탭 전용 출력 스타일 */
-        .scenario-header { color: #4ade80; font-size: 15px; margin-bottom: 20px; font-weight: bold; }
-        .notice-box { background: #1e1e1e; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; color: #d1d5db; }
+        .btn-add { background: #2a9d8f; color: white; border: none; padding: 8px 15px; font-size: 14px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         
-        /* 🔥 PC 카드 뒤집기 (플립) 애니메이션 CSS 🔥 */
-        .pc-cards-container { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        /* 탭 전용 출력 스타일 */
+        .scenario-header { color: #4ade80; font-size: 15px; margin-bottom: 10px; font-weight: bold; }
+        .notice-box { background: #1e1e1e; border-left: 4px solid #e63946; padding: 15px; margin-bottom: 25px; color: #d1d5db; }
+        
+        /* 🔥 PC 카드 뒤집기 (플립) CSS 🔥 */
+        .pc-cards-container { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
         .flip-card { background-color: transparent; width: 220px; height: 320px; perspective: 1000px; cursor: pointer; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -47,17 +48,18 @@
         .flip-card-front { background-color: #2a2d2d; color: #fff; border: 1px solid #444; }
         .flip-card-back { background-color: #3b0d11; color: white; transform: rotateY(180deg); border: 1px solid #e63946; }
         .card-title { font-weight: bold; color: #e63946; font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
-        .flip-card-back .card-title { color: #ff6b6b; }
+        .flip-card-back .card-title { color: #ff6b6b; border-bottom: none; margin-bottom: 5px; padding-bottom: 0; }
+        .shock-label { font-weight: bold; color: #ffd700; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
         .card-text { font-size: 14px; line-height: 1.6; text-align: left; overflow-y: auto; }
 
-        /* 주사위 및 진행 도우미 */
+        /* 주사위 */
         .sidebar h3 { color: #4ade80; margin-top: 0; font-size: 16px; }
         .dice-box { background: #162a24; padding: 15px; border-radius: 5px; text-align: center; margin-top: 20px; }
         .btn-dice { background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         #dice-result { margin-top: 10px; font-weight: bold; font-size: 18px; color: #4ade80; }
         
         .content-view { white-space: pre-wrap; line-height: 1.8; font-size: 16px; color: #d1d5db; }
-        .tab-pane > h2 { color: #e63946; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .tab-pane > h2 { color: #e63946; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -66,9 +68,9 @@
         <div class="logo">inSANE</div>
         <nav id="main-nav">
             <button class="menu-btn active" onclick="switchTab('setting', this)">설정/입력</button>
+            <button class="menu-btn" onclick="switchTab('progress', this)">진행 방법</button>
             <button class="menu-btn" onclick="switchTab('intro', this)">개요</button>
             <button class="menu-btn" onclick="switchTab('pc', this)">PC</button>
-            <button class="menu-btn" onclick="switchTab('progress', this)">진행 방법</button>
             <button class="menu-btn" onclick="switchTab('master', this)">마스터 장면</button>
             <button class="menu-btn" onclick="switchTab('tables', this)">장면표</button>
             <button class="menu-btn" onclick="switchTab('handout', this)">핸드아웃</button>
@@ -113,46 +115,56 @@
 
                 <div class="form-section">
                     <h3>2. 시나리오 개요 및 안내</h3>
+                    <label>안내사항 (개요 상단에 표기됩니다. 숫자로 작성 시 '※'로 변환)</label>
+                    <textarea id="input-notice" placeholder="1. 핸드아웃 비밀 확인 팝업 끄기&#10;2. PC 중 누군가 감정을 획득함" style="margin-bottom:15px;"></textarea>
+                    
                     <label>시나리오 개요 본문</label>
                     <textarea id="input-overview" placeholder="당신들은 태어났을 적부터 그곳에서 자랐습니다..."></textarea>
-                    
-                    <label style="display:block; margin-top:15px;">안내사항 (숫자로 작성 시 자동으로 '※' 변환됩니다)</label>
-                    <textarea id="input-notice" placeholder="1. 핸드아웃 비밀 확인 팝업 끄기&#10;2. PC 중 누군가 감정을 획득함"></textarea>
                 </div>
 
                 <div class="form-section">
                     <h3>3. PC 핸드아웃 (공개/비밀)</h3>
-                    <p style="font-size:12px; color:#888;">입력된 PC 수만큼만 카드형태로 생성됩니다.</p>
                     <div id="pc-inputs-container">
                         </div>
+                    <button class="btn-add" id="btn-add-pc" onclick="addPC()">+ PC 추가</button>
                 </div>
 
                 <div class="form-section">
-                    <h3>4. 2D6 장면표 입력</h3>
+                    <h3>4. 장면표 입력</h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="width:auto; margin-right: 15px;">
+                            <input type="radio" name="scene-type" value="1d6" onchange="renderSceneInputs('1d6')"> 1D6 장면표
+                        </label>
+                        <label style="width:auto;">
+                            <input type="radio" name="scene-type" value="2d6" checked onchange="renderSceneInputs('2d6')"> 2D6 장면표
+                        </label>
+                    </div>
                     <div id="scene-inputs-container">
                         </div>
                 </div>
 
-                <button class="btn-parse" onclick="generateScenario()">시나리오 세팅 완료 및 생성</button>
+                <button class="btn-parse" onclick="generateScenario()">시나리오 세팅 완료</button>
             </div>
 
             <div id="tab-intro" class="tab-pane" style="display: none;">
-                <h2>SCENARIO 개요</h2>
+                <h2>개요</h2>
                 <div id="view-header" class="scenario-header"></div>
-                <div id="view-overview" class="content-view"></div>
                 <div id="view-notice" class="notice-box content-view" style="display:none;"></div>
                 
-                <h3 style="margin-top:40px; border-bottom: 1px solid #333; padding-bottom:10px;">PC 소개</h3>
+                <div id="view-overview" class="content-view"></div>
+            </div>
+
+            <div id="tab-pc" class="tab-pane" style="display: none;">
+                <h2>PC</h2>
                 <div id="view-pc-cards" class="pc-cards-container">
                     </div>
             </div>
 
-            <div id="tab-pc" class="tab-pane" style="display: none;"><h2>PC</h2><div class="content-view">추가 PC 정보 기능 구현 시 사용</div></div>
-            <div id="tab-progress" class="tab-pane" style="display: none;"><h2>진행 방법</h2><div class="content-view">추후 구현 공간</div></div>
+            <div id="tab-progress" class="tab-pane" style="display: none;"><h2>진행 방법</h2><div class="content-view">여기에 진행 방법을 입력/출력하도록 추후 확장 가능합니다.</div></div>
             <div id="tab-master" class="tab-pane" style="display: none;"><h2>마스터 장면</h2><div class="content-view">추후 구현 공간</div></div>
             
             <div id="tab-tables" class="tab-pane" style="display: none;">
-                <h2>장면표 (2D6)</h2>
+                <h2 id="view-scene-title">장면표</h2>
                 <div id="view-scene-table" class="content-view"></div>
             </div>
 
@@ -167,7 +179,7 @@
             <h3>❓ 시나리오 진행 도우미</h3>
             <hr style="border: 0.5px solid #1b4d3e; margin-bottom: 15px;">
             <div class="dice-box">
-                <h4>🎲 인세인 판정 (2D6)</h4>
+                <h4>🎲 인세인 판정</h4>
                 <button class="btn-dice" onclick="rollDice()">주사위 굴리기</button>
                 <div id="dice-result">-</div>
             </div>
@@ -175,71 +187,127 @@
     </div>
 
     <script>
-        // 페이지가 열리면 입력창 뼈대를 자동으로 만듭니다.
-        window.onload = function() {
-            // PC 1~5 입력창 생성
-            let pcHtml = "";
-            for(let i=1; i<=5; i++) {
-                pcHtml += `
-                <div style="margin-bottom: 20px; border-left: 3px solid #2a9d8f; padding-left: 15px;">
-                    <h4 style="margin:0 0 10px 0;">PC ${i}</h4>
-                    <textarea id="pc-${i}-pub" placeholder="공개용 사명/설명..." style="height:60px; margin-bottom:5px;"></textarea>
-                    <textarea id="pc-${i}-sec" placeholder="비밀 핸드아웃 내용..." style="height:60px; border-color:#e63946;"></textarea>
-                </div>`;
-            }
-            document.getElementById('pc-inputs-container').innerHTML = pcHtml;
+        let pcCount = 1;
+        let currentSceneType = '2d6';
 
-            // 장면표 2~12 입력창 생성 (요청하신 비중 표시 포함)
-            const percentages = { 2:"3%", 3:"6%", 4:"8%", 5:"11%", 6:"14%", 7:"16%", 8:"14%", 9:"11%", 10:"8%", 11:"6%", 12:"3%" };
-            let sceneHtml = "";
-            for(let i=2; i<=12; i++) {
-                sceneHtml += `
-                <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
-                    <strong style="width:40px; color:#4ade80;">${i}</strong>
-                    <span style="width:40px; color:#888; font-size:12px;">(${percentages[i]})</span>
-                    <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i}이(가) 나왔을 때의 장면 묘사">
-                </div>`;
-            }
-            document.getElementById('scene-inputs-container').innerHTML = sceneHtml;
+        window.onload = function() {
+            // 초기 PC1 생성
+            document.getElementById('pc-inputs-container').innerHTML = createPCHtml(1);
+            // 초기 2D6 장면표 생성
+            renderSceneInputs('2d6');
         };
 
-        // '시나리오 세팅 완료' 버튼을 눌렀을 때 실행되는 함수
+        // PC 입력 폼 생성 함수
+        function createPCHtml(num) {
+            return `
+            <div id="pc-box-${num}" style="margin-bottom: 20px; border-left: 3px solid #2a9d8f; padding-left: 15px;">
+                <h4 style="margin:0 0 10px 0;">PC ${num}</h4>
+                <textarea id="pc-${num}-pub" placeholder="공개용 사명 및 설명..." style="height:60px; margin-bottom:5px;"></textarea>
+                
+                <div style="margin-bottom: 5px; font-size: 14px;">
+                    <label style="width:auto; color:#ff6b6b; cursor:pointer;">
+                        <input type="checkbox" id="shock-check-${num}" onchange="toggleShock(${num})"> 쇼크
+                    </label>
+                    <span id="shock-target-wrap-${num}" style="display:none; margin-left: 10px;">
+                        대상: 
+                        <select id="shock-target-${num}">
+                            <option value="전원">전원</option>
+                            <option value="PC1">PC1</option>
+                            <option value="PC2">PC2</option>
+                            <option value="PC3">PC3</option>
+                            <option value="PC4">PC4</option>
+                            <option value="PC5">PC5</option>
+                            <option value="해당 없음">해당 없음</option>
+                        </select>
+                    </span>
+                </div>
+                
+                <textarea id="pc-${num}-sec" placeholder="비밀 핸드아웃 내용..." style="height:60px; border-color:#e63946;"></textarea>
+            </div>`;
+        }
+
+        // PC 추가 버튼 동작
+        function addPC() {
+            if (pcCount < 5) {
+                pcCount++;
+                document.getElementById('pc-inputs-container').insertAdjacentHTML('beforeend', createPCHtml(pcCount));
+                if (pcCount === 5) document.getElementById('btn-add-pc').style.display = 'none';
+            }
+        }
+
+        // 쇼크 체크박스 토글
+        function toggleShock(num) {
+            const isChecked = document.getElementById(`shock-check-${num}`).checked;
+            document.getElementById(`shock-target-wrap-${num}`).style.display = isChecked ? 'inline' : 'none';
+        }
+
+        // 장면표 1D6 / 2D6 전환
+        function renderSceneInputs(type) {
+            currentSceneType = type;
+            let sceneHtml = "";
+            
+            if (type === '1d6') {
+                for(let i=1; i<=6; i++) {
+                    sceneHtml += `
+                    <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+                        <strong style="width:40px; color:#4ade80;">${i}</strong>
+                        <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i}이(가) 나왔을 때의 장면 묘사">
+                    </div>`;
+                }
+            } else {
+                const percentages = { 2:"3%", 3:"6%", 4:"8%", 5:"11%", 6:"14%", 7:"16%", 8:"14%", 9:"11%", 10:"8%", 11:"6%", 12:"3%" };
+                for(let i=2; i<=12; i++) {
+                    sceneHtml += `
+                    <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+                        <strong style="width:40px; color:#4ade80;">${i}</strong>
+                        <span style="width:40px; color:#888; font-size:12px;">(${percentages[i]})</span>
+                        <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i}이(가) 나왔을 때의 장면 묘사">
+                    </div>`;
+                }
+            }
+            document.getElementById('scene-inputs-container').innerHTML = sceneHtml;
+        }
+
+        // 세팅 완료 파싱
         function generateScenario() {
-            // 1. 기본 정보 수집 및 문자열 조립
+            // 1. 안내사항 구성 (위치: 개요 상단)
             const type = document.getElementById('info-type').value;
             const players = document.getElementById('info-players').value || "?";
             const cycles = document.getElementById('info-cycles').value || "?";
             const cards = document.getElementById('info-cards').value || "?";
             
             const bookElements = document.querySelectorAll('.info-books:checked');
-            let books = Array.from(bookElements).map(el => el.value).join(", ");
-            if(!books) books = "선택 안됨";
+            let books = Array.from(bookElements).map(el => el.value).join(", ") || "선택 안됨";
 
-            const headerText = `inSANE ${type} | ${players}인 ${cycles}사이클 | 광기카드 : ${cards}장 이내 | 사용 룰북: 인세인 ${books}`;
-            document.getElementById('view-header').innerText = headerText;
+            // 헤더 정보
+            document.getElementById('view-header').innerText = `inSANE ${type} | ${players}인 ${cycles}사이클 | 광기카드 : ${cards}장 이내 | 사용 룰북: 인세인 ${books}`;
 
-            // 2. 개요 본문
-            document.getElementById('view-overview').innerText = document.getElementById('input-overview').value;
-
-            // 3. 안내사항 (숫자. -> ※ 변환)
+            // 세부 안내사항
             const rawNotice = document.getElementById('input-notice').value;
             if(rawNotice.trim() !== "") {
-                const noticeLines = rawNotice.split('\n');
-                // 정규식(Regex)을 이용해 문장 맨 앞의 "숫자." 패턴을 "※"로 바꿉니다.
-                const formattedNotice = noticeLines.map(line => line.replace(/^[0-9]+\.\s*/, '※ ')).join('\n');
-                document.getElementById('view-notice').innerText = "【 안내사항 】\n" + formattedNotice;
+                const formattedNotice = rawNotice.split('\n').map(line => line.replace(/^[0-9]+\.\s*/, '※ ')).join('\n');
+                document.getElementById('view-notice').innerText = formattedNotice;
                 document.getElementById('view-notice').style.display = 'block';
             } else {
                 document.getElementById('view-notice').style.display = 'none';
             }
 
-            // 4. PC 병렬 카드 생성
+            // 2. 개요 본문
+            document.getElementById('view-overview').innerText = document.getElementById('input-overview').value;
+
+            // 3. PC 핸드아웃 (개요 탭이 아닌 PC 탭에 렌더링)
             let cardsHtml = "";
-            for(let i=1; i<=5; i++) {
+            for(let i=1; i<=pcCount; i++) {
                 const pubText = document.getElementById(`pc-${i}-pub`).value.trim();
                 const secText = document.getElementById(`pc-${i}-sec`).value.trim();
                 
-                // 공개 텍스트가 입력된 PC만 카드로 만듭니다.
+                let shockHtml = "";
+                const shockChecked = document.getElementById(`shock-check-${i}`) && document.getElementById(`shock-check-${i}`).checked;
+                if(shockChecked) {
+                    const shockTarget = document.getElementById(`shock-target-${i}`).value;
+                    shockHtml = `<div class="shock-label">쇼크: ${shockTarget}</div>`;
+                }
+
                 if(pubText) {
                     cardsHtml += `
                     <div class="flip-card" onclick="this.classList.toggle('flipped')">
@@ -251,6 +319,7 @@
                             </div>
                             <div class="flip-card-back">
                                 <div class="card-title">PC ${i} 【비밀】</div>
+                                ${shockHtml}
                                 <div class="card-text">${secText ? secText.replace(/\n/g, '<br>') : "비밀이 없습니다."}</div>
                             </div>
                         </div>
@@ -259,20 +328,25 @@
             }
             document.getElementById('view-pc-cards').innerHTML = cardsHtml || "<span style='color:#888;'>등록된 PC가 없습니다.</span>";
 
-            // 5. 장면표 생성
+            // 4. 장면표
             let tableHtml = "<ul>";
-            for(let i=2; i<=12; i++) {
+            let startIndex = currentSceneType === '1d6' ? 1 : 2;
+            let endIndex = currentSceneType === '1d6' ? 6 : 12;
+            
+            document.getElementById('view-scene-title').innerText = currentSceneType === '1d6' ? '장면표 (1D6)' : '장면표 (2D6)';
+
+            for(let i=startIndex; i<=endIndex; i++) {
                 const sceneText = document.getElementById(`scene-${i}`).value;
                 if(sceneText) tableHtml += `<li style="margin-bottom:10px;"><strong>[${i}]</strong> : ${sceneText}</li>`;
             }
             tableHtml += "</ul>";
             document.getElementById('view-scene-table').innerHTML = tableHtml === "<ul></ul>" ? "등록된 장면표가 없습니다." : tableHtml;
 
-            alert("개요 및 세팅이 완료되었습니다! 화면을 전환합니다.");
-            switchTab('intro', document.querySelectorAll('.menu-btn')[1]);
+            alert("세팅이 완료되었습니다! 화면을 전환합니다.");
+            switchTab('intro', document.querySelectorAll('.menu-btn')[2]); // 개요 탭으로 이동
         }
 
-        // 상단 메뉴 탭 전환
+        // 탭 전환
         function switchTab(tabName, clickedButton) {
             document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
@@ -283,6 +357,7 @@
 
         // 주사위
         function rollDice() {
+            const is1D6 = Math.random() < 0.5; // 간단히 1d6인지 2d6인지 구분용 (현재는 무조건 2d6)
             const d1 = Math.floor(Math.random() * 6) + 1;
             const d2 = Math.floor(Math.random() * 6) + 1;
             const total = d1 + d2;
