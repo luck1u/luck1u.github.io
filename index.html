@@ -4,68 +4,102 @@
     <meta charset="UTF-8">
     <title>inSANE GM-less 서포터</title>
     <style>
-        /* 기본 디자인 설정 */
-        body { margin: 0; padding: 0; background-color: #0b0c0c; color: #e0e0e0; font-family: 'Noto Sans KR', sans-serif; }
-        header { background-color: #121414; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2323; }
-        .logo { color: #e63946; font-weight: bold; font-size: 22px; letter-spacing: 1px; }
+        /* 🎨 스크린샷 기반 다크 & 네온 그린 테마 */
+        body { margin: 0; padding: 0; background-color: #080a09; color: #d1d5db; font-family: 'Noto Sans KR', sans-serif; }
+        header { background-color: #0d1110; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a2421; }
+        .logo { color: #ff3b3b; font-weight: bold; font-size: 24px; letter-spacing: 2px; text-shadow: 0 0 5px rgba(255,59,59,0.3); }
         
         nav { display: flex; gap: 5px; flex-wrap: wrap; }
-        nav button { background: none; border: none; color: #8a8f8f; padding: 8px 12px; font-size: 14px; cursor: pointer; transition: color 0.2s; }
-        nav button.active { color: #2a9d8f; font-weight: bold; border-bottom: 2px solid #2a9d8f; }
+        nav button { background: none; border: none; color: #6b7280; padding: 10px 15px; font-size: 15px; cursor: pointer; transition: all 0.2s; }
+        nav button.active { color: #4ade80; font-weight: bold; border-bottom: 2px solid #4ade80; text-shadow: 0 0 8px rgba(74,222,128,0.5); }
         nav button:hover { color: #fff; }
 
         .container { display: flex; padding: 30px; gap: 30px; }
-        .main-content { flex: 3; background: #121414; padding: 30px; border-radius: 8px; min-height: 600px; }
-        .sidebar { flex: 1; background: #0f1c1a; padding: 20px; border-radius: 8px; border: 1px solid #1b4d3e; height: fit-content; position: sticky; top: 30px; }
+        .main-content { flex: 3; background: #0d1110; padding: 40px; border-radius: 12px; min-height: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .sidebar { flex: 1; background: #0a0d0c; padding: 20px; border-radius: 12px; border: 1px solid #162a24; height: fit-content; position: sticky; top: 30px; }
+
+        /* 메인 타이틀 (스크린샷 참고) */
+        .section-title { color: #ff3b3b; font-size: 32px; font-weight: 300; margin-top: 0; margin-bottom: 30px; border-bottom: 1px solid #1a2421; padding-bottom: 15px; letter-spacing: 1px; }
 
         /* 입력 폼 스타일 */
-        .form-section { background: #1a1d1d; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
-        .form-section h3 { margin-top: 0; color: #2a9d8f; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .form-section { background: #121816; padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #1a2421; }
+        .form-section h3 { margin-top: 0; color: #4ade80; border-bottom: 1px solid #1a2421; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: inline-block; width: 120px; color: #a1a1aa; }
+        .form-group label { display: inline-block; width: 120px; color: #9ca3af; }
         input[type="text"], input[type="number"], select, textarea { 
-            background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: inherit;
+            background: #080a09; color: #fff; border: 1px solid #2d3748; padding: 10px; border-radius: 6px; font-family: inherit;
         }
+        input[type="text"]:focus, textarea:focus { outline: none; border-color: #4ade80; box-shadow: 0 0 5px rgba(74,222,128,0.3); }
         textarea { width: 100%; height: 100px; resize: vertical; margin-top: 5px; box-sizing: border-box; }
         
-        .btn-parse { background: #e63946; color: white; border: none; padding: 15px 20px; font-size: 18px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 20px; }
-        .btn-parse:hover { background: #d62839; }
-        .btn-add { background: #2a9d8f; color: white; border: none; padding: 8px 15px; font-size: 14px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        
-        /* 탭 전용 출력 스타일 */
-        .scenario-header { color: #4ade80; font-size: 15px; margin-bottom: 10px; font-weight: bold; }
-        .notice-box { background: #1e1e1e; border-left: 4px solid #e63946; padding: 15px; margin-bottom: 25px; color: #d1d5db; }
-        
-        /* 🔥 PC 카드 뒤집기 (플립) CSS 🔥 */
-        .pc-cards-container { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-        .flip-card { background-color: transparent; width: 220px; height: 320px; perspective: 1000px; cursor: pointer; }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .btn-parse { background: #ff3b3b; color: white; border: none; padding: 15px 20px; font-size: 18px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 20px; transition: 0.2s; }
+        .btn-parse:hover { background: #e02424; box-shadow: 0 0 15px rgba(255,59,59,0.4); }
+        .btn-add { background: #162a24; color: #4ade80; border: 1px solid #4ade80; padding: 8px 15px; font-size: 14px; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-add:hover { background: #4ade80; color: #000; }
+
+        /* 출력 공통 스타일 */
+        .scenario-header { color: #4ade80; font-size: 15px; margin-bottom: 15px; font-weight: bold; letter-spacing: 0.5px; }
+        .notice-box { background: #121816; border-left: 4px solid #ff3b3b; padding: 15px; margin-bottom: 30px; color: #d1d5db; }
+        .content-view { white-space: pre-wrap; line-height: 1.8; font-size: 16px; color: #d1d5db; }
+
+        /* 🌁 장면표 스포일러 블러 효과 */
+        .scene-list { list-style: none; padding: 0; }
+        .scene-list li { margin-bottom: 15px; background: #121816; padding: 15px; border-radius: 8px; border: 1px solid #1a2421; display: flex; gap: 15px; }
+        .scene-num { color: #4ade80; font-weight: bold; font-size: 18px; min-width: 35px; }
+        .scene-text { flex: 1; filter: blur(6px); cursor: pointer; transition: filter 0.3s ease; user-select: none; }
+        .scene-text.revealed { filter: blur(0); cursor: default; user-select: auto; }
+        .scene-text:not(.revealed):hover { filter: blur(4px); }
+
+        /* 🎬 마스터 장면 탭 디자인 (스크린샷 반영) */
+        .master-scene-nav { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .master-scene-btn { background: #121816; border: 1px solid #2d3748; color: #9ca3af; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 15px; transition: 0.2s; }
+        .master-scene-btn.active { background: #0a1f14; border-color: #4ade80; color: #4ade80; font-weight: bold; }
+        .master-scene-content { display: none; background: #121816; padding: 30px; border-radius: 8px; border: 1px solid #1a2421; }
+        .master-scene-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 🃏 핸드아웃 및 PC 카드 플립 공통 */
+        .cards-container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
+        .flip-card { background-color: transparent; width: 280px; height: 400px; perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            border-radius: 10px; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;
+            border-radius: 12px; padding: 25px; box-sizing: border-box; display: flex; flex-direction: column;
         }
-        .flip-card-front { background-color: #2a2d2d; color: #fff; border: 1px solid #444; }
-        .flip-card-back { background-color: #3b0d11; color: white; transform: rotateY(180deg); border: 1px solid #e63946; }
-        .card-title { font-weight: bold; color: #e63946; font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
+
+        /* 핸드아웃 디자인 (스크린샷의 화이트/그린 네온 반영) */
+        .handout-list-item { background: #121816; border: 1px solid #2d3748; color: #e0e0e0; padding: 15px 20px; margin-bottom: 10px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.2s; display: flex; justify-content: space-between; }
+        .handout-list-item:hover { border-color: #4ade80; color: #4ade80; }
+        
+        .handout-card .flip-card-front { background: #e8f0ec; color: #111; box-shadow: 0 0 20px rgba(74,222,128,0.4); border: 2px solid #bbf7d0; }
+        .handout-card .flip-card-back { background: #2a0808; color: white; transform: rotateY(180deg); border: 2px solid #ff3b3b; box-shadow: 0 0 20px rgba(255,59,59,0.3); }
+        
+        .handout-top-label { color: #166534; font-weight: bold; letter-spacing: 3px; font-size: 12px; margin-bottom: 15px; }
+        .handout-title-text { font-size: 20px; font-weight: bold; color: #064e3b; margin-bottom: 10px; }
+        .handout-asterisk { color: #166534; font-size: 24px; margin-bottom: 15px; }
+        .handout-inner-box { background: #fff; padding: 15px; border-radius: 8px; flex: 1; overflow-y: auto; text-align: left; font-size: 14px; line-height: 1.7; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        
+        /* PC 카드 디자인 (다크 톤 유지) */
+        .pc-card .flip-card-front { background-color: #1a2421; color: #fff; border: 1px solid #4ade80; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .pc-card .flip-card-back { background-color: #3b0d11; color: white; transform: rotateY(180deg); border: 1px solid #ff3b3b; }
+        
+        .card-title { font-weight: bold; color: #4ade80; font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid rgba(74,222,128,0.3); padding-bottom: 10px; }
         .flip-card-back .card-title { color: #ff6b6b; border-bottom: none; margin-bottom: 5px; padding-bottom: 0; }
-        .shock-label { font-weight: bold; color: #ffd700; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
-        .card-text { font-size: 14px; line-height: 1.6; text-align: left; overflow-y: auto; }
+        .shock-label { font-weight: bold; color: #fbbf24; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-size: 15px; }
 
         /* 주사위 */
-        .sidebar h3 { color: #4ade80; margin-top: 0; font-size: 16px; }
-        .dice-box { background: #162a24; padding: 15px; border-radius: 5px; text-align: center; margin-top: 20px; }
-        .btn-dice { background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        #dice-result { margin-top: 10px; font-weight: bold; font-size: 18px; color: #4ade80; }
-        
-        .content-view { white-space: pre-wrap; line-height: 1.8; font-size: 16px; color: #d1d5db; }
-        .tab-pane > h2 { color: #e63946; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px; }
+        .sidebar h3 { color: #ff3b3b; margin-top: 0; font-size: 16px; letter-spacing: 1px; }
+        .dice-box { background: #121816; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px; border: 1px solid #1a2421; }
+        .btn-dice { background: #4ade80; color: #000; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; }
+        .btn-dice:hover { background: #22c55e; }
+        #dice-result { margin-top: 15px; font-weight: bold; font-size: 20px; color: #4ade80; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">inSANE</div>
+        <div class="logo">四誠命 (GM-less)</div>
         <nav id="main-nav">
             <button class="menu-btn active" onclick="switchTab('setting', this)">설정/입력</button>
             <button class="menu-btn" onclick="switchTab('progress', this)">진행 방법</button>
@@ -84,102 +118,97 @@
         <main class="main-content">
             
             <div id="tab-setting" class="tab-pane">
-                <h2 style="color: #2a9d8f;">시나리오 상세 설정</h2>
+                <h2 class="section-title">시나리오 상세 설정</h2>
                 
                 <div class="form-section">
-                    <h3>1. 기본 정보 설정</h3>
+                    <h3>1. 기본 정보 & 개요</h3>
                     <div class="form-group">
-                        <label>시나리오 타입</label>
-                        <select id="info-type">
-                            <option value="대립형">대립형</option>
-                            <option value="특수형">특수형</option>
-                            <option value="협력형">협력형</option>
-                        </select>
+                        <select id="info-type"><option value="대립형">대립형</option><option value="특수형">특수형</option><option value="협력형">협력형</option></select> / 
+                        <input type="number" id="info-players" placeholder="인원" style="width: 60px;"> 인 
+                        <input type="number" id="info-cycles" placeholder="사이클" style="width: 60px;"> 사이클 / 
+                        카드 <input type="number" id="info-cards" style="width: 60px;"> 장
                     </div>
-                    <div class="form-group">
-                        <label>인원 및 사이클</label>
-                        <input type="number" id="info-players" min="1" max="10" style="width: 50px;"> 인 /
-                        <input type="number" id="info-cycles" min="1" max="10" style="width: 50px;"> 사이클
-                    </div>
-                    <div class="form-group">
-                        <label>광기카드 장수</label>
-                        <input type="number" id="info-cards" min="0" style="width: 80px;"> 장
-                    </div>
-                    <div class="form-group">
-                        <label>사용 룰북</label>
-                        <label style="width:auto; margin-right:10px;"><input type="checkbox" class="info-books" value="1권"> 인세인 1권</label>
-                        <label style="width:auto; margin-right:10px;"><input type="checkbox" class="info-books" value="2권"> 인세인 2권</label>
-                        <label style="width:auto;"><input type="checkbox" class="info-books" value="3권"> 인세인 3권</label>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h3>2. 시나리오 개요 및 안내</h3>
-                    <label>안내사항 (개요 상단에 표기됩니다. 숫자로 작성 시 '※'로 변환)</label>
-                    <textarea id="input-notice" placeholder="1. 핸드아웃 비밀 확인 팝업 끄기&#10;2. PC 중 누군가 감정을 획득함" style="margin-bottom:15px;"></textarea>
-                    
-                    <label>시나리오 개요 본문</label>
+                    <label>안내사항</label>
+                    <textarea id="input-notice" placeholder="1. 안내사항 입력..."></textarea>
+                    <label>시나리오 개요</label>
                     <textarea id="input-overview" placeholder="당신들은 태어났을 적부터 그곳에서 자랐습니다..."></textarea>
                 </div>
 
                 <div class="form-section">
-                    <h3>3. PC 핸드아웃 (공개/비밀)</h3>
-                    <div id="pc-inputs-container">
-                        </div>
+                    <h3>2. PC 핸드아웃</h3>
+                    <div id="pc-inputs-container"></div>
                     <button class="btn-add" id="btn-add-pc" onclick="addPC()">+ PC 추가</button>
                 </div>
 
                 <div class="form-section">
-                    <h3>4. 장면표 입력</h3>
+                    <h3>3. 마스터 장면</h3>
+                    <div id="master-inputs-container"></div>
+                    <button class="btn-add" onclick="addMasterScene()">+ 장면 추가</button>
+                </div>
+
+                <div class="form-section">
+                    <h3>4. 장면표</h3>
                     <div style="margin-bottom: 15px;">
-                        <label style="width:auto; margin-right: 15px;">
-                            <input type="radio" name="scene-type" value="1d6" onchange="renderSceneInputs('1d6')"> 1D6 장면표
-                        </label>
-                        <label style="width:auto;">
-                            <input type="radio" name="scene-type" value="2d6" checked onchange="renderSceneInputs('2d6')"> 2D6 장면표
-                        </label>
+                        <label style="width:auto; margin-right: 15px;"><input type="radio" name="scene-type" value="1d6" onchange="renderSceneInputs('1d6')"> 1D6</label>
+                        <label style="width:auto;"><input type="radio" name="scene-type" value="2d6" checked onchange="renderSceneInputs('2d6')"> 2D6</label>
                     </div>
-                    <div id="scene-inputs-container">
-                        </div>
+                    <div id="scene-inputs-container"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3>5. 일반 핸드아웃</h3>
+                    <div id="handout-inputs-container"></div>
+                    <button class="btn-add" onclick="addHandout()">+ 핸드아웃 추가</button>
                 </div>
 
                 <button class="btn-parse" onclick="generateScenario()">시나리오 세팅 완료</button>
             </div>
 
             <div id="tab-intro" class="tab-pane" style="display: none;">
-                <h2>개요</h2>
+                <h2 class="section-title">개요</h2>
                 <div id="view-header" class="scenario-header"></div>
                 <div id="view-notice" class="notice-box content-view" style="display:none;"></div>
-                
                 <div id="view-overview" class="content-view"></div>
             </div>
 
             <div id="tab-pc" class="tab-pane" style="display: none;">
-                <h2>PC</h2>
-                <div id="view-pc-cards" class="pc-cards-container">
-                    </div>
+                <h2 class="section-title">PC</h2>
+                <div id="view-pc-cards" class="cards-container"></div>
             </div>
 
-            <div id="tab-progress" class="tab-pane" style="display: none;"><h2>진행 방법</h2><div class="content-view">여기에 진행 방법을 입력/출력하도록 추후 확장 가능합니다.</div></div>
-            <div id="tab-master" class="tab-pane" style="display: none;"><h2>마스터 장면</h2><div class="content-view">추후 구현 공간</div></div>
+            <div id="tab-master" class="tab-pane" style="display: none;">
+                <h2 class="section-title">마스터 장면</h2>
+                <div id="view-master-nav" class="master-scene-nav"></div>
+                <div id="view-master-contents"></div>
+            </div>
             
             <div id="tab-tables" class="tab-pane" style="display: none;">
-                <h2 id="view-scene-title">장면표</h2>
-                <div id="view-scene-table" class="content-view"></div>
+                <h2 class="section-title" id="view-scene-title">장면표</h2>
+                <p style="color:#6b7280; margin-bottom:20px; font-size:14px;">※ 스포일러 방지를 위해 가려져 있습니다. 클릭하면 내용을 확인할 수 있습니다.</p>
+                <ul id="view-scene-table" class="scene-list"></ul>
             </div>
 
-            <div id="tab-handout" class="tab-pane" style="display: none;"><h2>핸드아웃</h2><div class="content-view">추후 구현 공간</div></div>
-            <div id="tab-npc" class="tab-pane" style="display: none;"><h2>NPC</h2><div class="content-view">추후 구현 공간</div></div>
-            <div id="tab-climax" class="tab-pane" style="display: none;"><h2>클라이맥스</h2><div class="content-view">추후 구현 공간</div></div>
-            <div id="tab-ending" class="tab-pane" style="display: none;"><h2>엔딩</h2><div class="content-view">추후 구현 공간</div></div>
+            <div id="tab-handout" class="tab-pane" style="display: none;">
+                <h2 class="section-title">핸드아웃</h2>
+                <p style="color:#6b7280; margin-bottom:20px; font-size:14px;">※ 목록의 제목을 클릭하면 카드가 공개됩니다.</p>
+                
+                <div id="view-handout-list" style="margin-bottom: 30px;"></div>
+                
+                <div id="view-handout-cards" class="cards-container"></div>
+            </div>
+
+            <div id="tab-progress" class="tab-pane" style="display: none;"><h2 class="section-title">진행 방법</h2></div>
+            <div id="tab-npc" class="tab-pane" style="display: none;"><h2 class="section-title">NPC</h2></div>
+            <div id="tab-climax" class="tab-pane" style="display: none;"><h2 class="section-title">클라이맥스</h2></div>
+            <div id="tab-ending" class="tab-pane" style="display: none;"><h2 class="section-title">엔딩</h2></div>
 
         </main>
 
         <aside class="sidebar">
             <h3>❓ 시나리오 진행 도우미</h3>
-            <hr style="border: 0.5px solid #1b4d3e; margin-bottom: 15px;">
+            <hr style="border: 0.5px solid #1a2421; margin-bottom: 15px;">
             <div class="dice-box">
-                <h4>🎲 인세인 판정</h4>
+                <h4 style="margin-top:0; color:#d1d5db;">🎲 판정 주사위</h4>
                 <button class="btn-dice" onclick="rollDice()">주사위 굴리기</button>
                 <div id="dice-result">-</div>
             </div>
@@ -187,166 +216,227 @@
     </div>
 
     <script>
-        let pcCount = 1;
+        let pcCount = 0;
+        let masterCount = 0;
+        let handoutCount = 0;
         let currentSceneType = '2d6';
 
-        window.onload = function() {
-            // 초기 PC1 생성
-            document.getElementById('pc-inputs-container').innerHTML = createPCHtml(1);
-            // 초기 2D6 장면표 생성
-            renderSceneInputs('2d6');
-        };
-
-        // PC 입력 폼 생성 함수
-        function createPCHtml(num) {
+        // 템플릿: PC 입력
+        function getPCHtml(num) {
             return `
-            <div id="pc-box-${num}" style="margin-bottom: 20px; border-left: 3px solid #2a9d8f; padding-left: 15px;">
-                <h4 style="margin:0 0 10px 0;">PC ${num}</h4>
-                <textarea id="pc-${num}-pub" placeholder="공개용 사명 및 설명..." style="height:60px; margin-bottom:5px;"></textarea>
-                
-                <div style="margin-bottom: 5px; font-size: 14px;">
-                    <label style="width:auto; color:#ff6b6b; cursor:pointer;">
-                        <input type="checkbox" id="shock-check-${num}" onchange="toggleShock(${num})"> 쇼크
-                    </label>
-                    <span id="shock-target-wrap-${num}" style="display:none; margin-left: 10px;">
-                        대상: 
-                        <select id="shock-target-${num}">
-                            <option value="전원">전원</option>
-                            <option value="PC1">PC1</option>
-                            <option value="PC2">PC2</option>
-                            <option value="PC3">PC3</option>
-                            <option value="PC4">PC4</option>
-                            <option value="PC5">PC5</option>
-                            <option value="해당 없음">해당 없음</option>
-                        </select>
+            <div style="border-left: 2px solid #4ade80; padding-left: 15px; margin-bottom: 20px;">
+                <h4 style="margin:0 0 10px 0; color:#4ade80;">PC ${num}</h4>
+                <textarea id="pc-${num}-pub" placeholder="공개용 사명..."></textarea>
+                <div style="margin: 5px 0;">
+                    <label style="color:#fbbf24; width:auto;"><input type="checkbox" id="shock-check-pc-${num}" onchange="toggleShock('pc', ${num})"> 쇼크</label>
+                    <span id="shock-target-wrap-pc-${num}" style="display:none; margin-left: 10px;">
+                        대상: <input type="text" id="shock-target-pc-${num}" placeholder="예: 전원, PC4" style="width:100px; padding:4px;">
                     </span>
                 </div>
-                
-                <textarea id="pc-${num}-sec" placeholder="비밀 핸드아웃 내용..." style="height:60px; border-color:#e63946;"></textarea>
+                <textarea id="pc-${num}-sec" placeholder="비밀 내용..."></textarea>
             </div>`;
         }
 
-        // PC 추가 버튼 동작
-        function addPC() {
-            if (pcCount < 5) {
-                pcCount++;
-                document.getElementById('pc-inputs-container').insertAdjacentHTML('beforeend', createPCHtml(pcCount));
-                if (pcCount === 5) document.getElementById('btn-add-pc').style.display = 'none';
-            }
+        // 템플릿: 마스터 장면 입력
+        function getMasterHtml(num) {
+            return `
+            <div style="margin-bottom: 15px; background: #080a09; padding: 15px; border-radius: 6px;">
+                <input type="text" id="master-title-${num}" placeholder="장면 제목 (예: 도입 페이즈)" style="width: 100%; margin-bottom: 10px; font-weight:bold;">
+                <textarea id="master-content-${num}" placeholder="장면 본문 내용..."></textarea>
+            </div>`;
         }
 
-        // 쇼크 체크박스 토글
-        function toggleShock(num) {
-            const isChecked = document.getElementById(`shock-check-${num}`).checked;
-            document.getElementById(`shock-target-wrap-${num}`).style.display = isChecked ? 'inline' : 'none';
+        // 템플릿: 핸드아웃 입력
+        function getHandoutHtml(num) {
+            return `
+            <div style="border-left: 2px solid #ff3b3b; padding-left: 15px; margin-bottom: 20px;">
+                <input type="text" id="handout-title-${num}" placeholder="핸드아웃 제목 (예: 시험 : 청린회 처리)" style="width: 100%; margin-bottom: 10px; font-weight:bold;">
+                <textarea id="handout-pub-${num}" placeholder="공개 내용..."></textarea>
+                <div style="margin: 5px 0;">
+                    <label style="color:#fbbf24; width:auto;"><input type="checkbox" id="shock-check-ho-${num}" onchange="toggleShock('ho', ${num})"> 쇼크</label>
+                    <span id="shock-target-wrap-ho-${num}" style="display:none; margin-left: 10px;">
+                        대상: <input type="text" id="shock-target-ho-${num}" placeholder="예: 최초로 획득한 PC" style="width:150px; padding:4px;">
+                    </span>
+                </div>
+                <textarea id="handout-sec-${num}" placeholder="비밀 내용..."></textarea>
+            </div>`;
         }
 
-        // 장면표 1D6 / 2D6 전환
+        // 초기화
+        window.onload = function() {
+            addPC();
+            addMasterScene();
+            renderSceneInputs('2d6');
+            addHandout();
+        };
+
+        function addPC() { if(pcCount < 5) { pcCount++; document.getElementById('pc-inputs-container').insertAdjacentHTML('beforeend', getPCHtml(pcCount)); if(pcCount===5) document.getElementById('btn-add-pc').style.display='none'; } }
+        function addMasterScene() { masterCount++; document.getElementById('master-inputs-container').insertAdjacentHTML('beforeend', getMasterHtml(masterCount)); }
+        function addHandout() { handoutCount++; document.getElementById('handout-inputs-container').insertAdjacentHTML('beforeend', getHandoutHtml(handoutCount)); }
+        
+        function toggleShock(type, num) {
+            const isChecked = document.getElementById(`shock-check-${type}-${num}`).checked;
+            document.getElementById(`shock-target-wrap-${type}-${num}`).style.display = isChecked ? 'inline' : 'none';
+        }
+
         function renderSceneInputs(type) {
             currentSceneType = type;
-            let sceneHtml = "";
-            
-            if (type === '1d6') {
-                for(let i=1; i<=6; i++) {
-                    sceneHtml += `
-                    <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
-                        <strong style="width:40px; color:#4ade80;">${i}</strong>
-                        <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i}이(가) 나왔을 때의 장면 묘사">
-                    </div>`;
-                }
-            } else {
-                const percentages = { 2:"3%", 3:"6%", 4:"8%", 5:"11%", 6:"14%", 7:"16%", 8:"14%", 9:"11%", 10:"8%", 11:"6%", 12:"3%" };
-                for(let i=2; i<=12; i++) {
-                    sceneHtml += `
-                    <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
-                        <strong style="width:40px; color:#4ade80;">${i}</strong>
-                        <span style="width:40px; color:#888; font-size:12px;">(${percentages[i]})</span>
-                        <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i}이(가) 나왔을 때의 장면 묘사">
-                    </div>`;
-                }
+            let html = "";
+            let max = type === '1d6' ? 6 : 12;
+            let start = type === '1d6' ? 1 : 2;
+            for(let i=start; i<=max; i++) {
+                html += `<div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+                            <strong style="width:30px; color:#4ade80;">${i}</strong>
+                            <input type="text" id="scene-${i}" style="flex:1;" placeholder="${i} 장면 묘사">
+                         </div>`;
             }
-            document.getElementById('scene-inputs-container').innerHTML = sceneHtml;
+            document.getElementById('scene-inputs-container').innerHTML = html;
         }
 
-        // 세팅 완료 파싱
         function generateScenario() {
-            // 1. 안내사항 구성 (위치: 개요 상단)
+            // 1. 개요
             const type = document.getElementById('info-type').value;
             const players = document.getElementById('info-players').value || "?";
             const cycles = document.getElementById('info-cycles').value || "?";
             const cards = document.getElementById('info-cards').value || "?";
-            
-            const bookElements = document.querySelectorAll('.info-books:checked');
-            let books = Array.from(bookElements).map(el => el.value).join(", ") || "선택 안됨";
+            document.getElementById('view-header').innerText = `inSANE ${type} | ${players}인 ${cycles}사이클 | 광기카드 : ${cards}장 이내`;
 
-            // 헤더 정보
-            document.getElementById('view-header').innerText = `inSANE ${type} | ${players}인 ${cycles}사이클 | 광기카드 : ${cards}장 이내 | 사용 룰북: 인세인 ${books}`;
-
-            // 세부 안내사항
             const rawNotice = document.getElementById('input-notice').value;
-            if(rawNotice.trim() !== "") {
-                const formattedNotice = rawNotice.split('\n').map(line => line.replace(/^[0-9]+\.\s*/, '※ ')).join('\n');
-                document.getElementById('view-notice').innerText = formattedNotice;
+            if(rawNotice.trim()) {
+                document.getElementById('view-notice').innerText = rawNotice.split('\n').map(line => line.replace(/^[0-9]+\.\s*/, '※ ')).join('\n');
                 document.getElementById('view-notice').style.display = 'block';
-            } else {
-                document.getElementById('view-notice').style.display = 'none';
-            }
-
-            // 2. 개요 본문
+            } else { document.getElementById('view-notice').style.display = 'none'; }
             document.getElementById('view-overview').innerText = document.getElementById('input-overview').value;
 
-            // 3. PC 핸드아웃 (개요 탭이 아닌 PC 탭에 렌더링)
-            let cardsHtml = "";
+            // 2. PC
+            let pcHtml = "";
             for(let i=1; i<=pcCount; i++) {
-                const pubText = document.getElementById(`pc-${i}-pub`).value.trim();
-                const secText = document.getElementById(`pc-${i}-sec`).value.trim();
+                const pub = document.getElementById(`pc-${i}-pub`).value.trim();
+                const sec = document.getElementById(`pc-${i}-sec`).value.trim();
+                if(!pub) continue;
+                let shock = document.getElementById(`shock-check-pc-${i}`).checked ? `<div class="shock-label">쇼크: ${document.getElementById(`shock-target-pc-${i}`).value}</div>` : "";
                 
-                let shockHtml = "";
-                const shockChecked = document.getElementById(`shock-check-${i}`) && document.getElementById(`shock-check-${i}`).checked;
-                if(shockChecked) {
-                    const shockTarget = document.getElementById(`shock-target-${i}`).value;
-                    shockHtml = `<div class="shock-label">쇼크: ${shockTarget}</div>`;
-                }
-
-                if(pubText) {
-                    cardsHtml += `
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card-title">PC ${i}</div>
-                                <div class="card-text">${pubText.replace(/\n/g, '<br>')}</div>
-                                <div style="margin-top:auto; font-size:11px; color:#888;">클릭하여 비밀 확인</div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card-title">PC ${i} 【비밀】</div>
-                                ${shockHtml}
-                                <div class="card-text">${secText ? secText.replace(/\n/g, '<br>') : "비밀이 없습니다."}</div>
-                            </div>
+                pcHtml += `
+                <div class="flip-card pc-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="card-title">PC ${i}</div>
+                            <div class="content-view" style="font-size:14px; text-align:left;">${pub}</div>
                         </div>
-                    </div>`;
+                        <div class="flip-card-back">
+                            <div class="card-title">PC ${i} 【비밀】</div>
+                            ${shock}
+                            <div class="content-view" style="font-size:14px; text-align:left;">${sec || "비밀 없음"}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            document.getElementById('view-pc-cards').innerHTML = pcHtml;
+
+            // 3. 마스터 장면
+            let masterNavHtml = "";
+            let masterContentHtml = "";
+            let hasMaster = false;
+            for(let i=1; i<=masterCount; i++) {
+                const title = document.getElementById(`master-title-${i}`).value.trim();
+                const content = document.getElementById(`master-content-${i}`).value.trim();
+                if(!title) continue;
+                hasMaster = true;
+                
+                // 첫 번째 탭을 활성화
+                const activeClass = i === 1 ? 'active' : '';
+                masterNavHtml += `<button class="master-scene-btn ${activeClass}" onclick="switchMasterScene(${i}, this)">${title}</button>`;
+                masterContentHtml += `<div id="m-scene-content-${i}" class="master-scene-content ${activeClass} content-view">${content}</div>`;
+            }
+            document.getElementById('view-master-nav').innerHTML = masterNavHtml;
+            document.getElementById('view-master-contents').innerHTML = masterContentHtml;
+
+            // 4. 장면표 (블러 처리)
+            let sceneHtml = "";
+            let start = currentSceneType === '1d6' ? 1 : 2;
+            let end = currentSceneType === '1d6' ? 6 : 12;
+            document.getElementById('view-scene-title').innerText = currentSceneType === '1d6' ? '장면표 (1D6)' : '장면표 (2D6)';
+            
+            for(let i=start; i<=end; i++) {
+                const text = document.getElementById(`scene-${i}`).value.trim();
+                if(text) {
+                    // 클릭 시 해당 줄(this) 안의 scene-text의 클래스를 토글하여 블러를 해제합니다.
+                    sceneHtml += `
+                    <li onclick="this.querySelector('.scene-text').classList.add('revealed')">
+                        <div class="scene-num">[${i}]</div>
+                        <div class="scene-text">${text}</div>
+                    </li>`;
                 }
             }
-            document.getElementById('view-pc-cards').innerHTML = cardsHtml || "<span style='color:#888;'>등록된 PC가 없습니다.</span>";
+            document.getElementById('view-scene-table').innerHTML = sceneHtml;
 
-            // 4. 장면표
-            let tableHtml = "<ul>";
-            let startIndex = currentSceneType === '1d6' ? 1 : 2;
-            let endIndex = currentSceneType === '1d6' ? 6 : 12;
+            // 5. 핸드아웃 (목록형 -> 클릭 시 카드 생성)
+            let handoutListHtml = "";
+            window.handoutData = {}; // 카드 데이터를 저장할 전역 객체
             
-            document.getElementById('view-scene-title').innerText = currentSceneType === '1d6' ? '장면표 (1D6)' : '장면표 (2D6)';
-
-            for(let i=startIndex; i<=endIndex; i++) {
-                const sceneText = document.getElementById(`scene-${i}`).value;
-                if(sceneText) tableHtml += `<li style="margin-bottom:10px;"><strong>[${i}]</strong> : ${sceneText}</li>`;
+            for(let i=1; i<=handoutCount; i++) {
+                const title = document.getElementById(`handout-title-${i}`).value.trim();
+                const pub = document.getElementById(`handout-pub-${i}`).value.trim();
+                const sec = document.getElementById(`handout-sec-${i}`).value.trim();
+                if(!title) continue;
+                
+                let shock = document.getElementById(`shock-check-ho-${i}`).checked ? `<div class="shock-label">쇼크: ${document.getElementById(`shock-target-ho-${i}`).value}</div>` : "";
+                
+                // 데이터 임시 저장
+                window.handoutData[i] = { title, pub, sec, shock };
+                
+                // 목록 버튼 생성
+                handoutListHtml += `
+                <div class="handout-list-item" onclick="revealHandoutCard(${i}, this)">
+                    <span>${title}</span>
+                    <span style="color:#6b7280; font-size:12px;">클릭하여 획득 ▶</span>
+                </div>`;
             }
-            tableHtml += "</ul>";
-            document.getElementById('view-scene-table').innerHTML = tableHtml === "<ul></ul>" ? "등록된 장면표가 없습니다." : tableHtml;
+            document.getElementById('view-handout-list').innerHTML = handoutListHtml;
+            document.getElementById('view-handout-cards').innerHTML = ""; // 초기엔 카드 비우기
 
-            alert("세팅이 완료되었습니다! 화면을 전환합니다.");
-            switchTab('intro', document.querySelectorAll('.menu-btn')[2]); // 개요 탭으로 이동
+            alert("세팅 완료! 개요 화면으로 이동합니다.");
+            switchTab('intro', document.querySelectorAll('.menu-btn')[2]);
         }
 
-        // 탭 전환
+        // 마스터 장면 탭 전환
+        function switchMasterScene(num, btnElement) {
+            document.querySelectorAll('.master-scene-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.master-scene-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`m-scene-content-${num}`).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // 핸드아웃 목록 클릭 시 카드 나타나기
+        function revealHandoutCard(num, listItemElement) {
+            // 이미 획득한 카드면 무시
+            if(listItemElement.style.opacity === '0.5') return;
+            listItemElement.style.opacity = '0.5';
+            listItemElement.innerHTML = `<span>${window.handoutData[num].title}</span><span style="color:#4ade80; font-size:12px;">획득 완료 ✔</span>`;
+
+            const data = window.handoutData[num];
+            const cardHtml = `
+            <div class="flip-card handout-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="handout-top-label">H A N D O U T</div>
+                        <div class="handout-title-text">${data.title}</div>
+                        <div class="handout-asterisk">✳</div>
+                        <div class="handout-inner-box content-view">${data.pub}</div>
+                        <div style="margin-top:15px; font-size:11px; color:#666; font-weight:bold;">제목을 클릭하여 【비밀】 확인</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="card-title">${data.title} 【비밀】</div>
+                        ${data.shock}
+                        <div class="handout-inner-box content-view" style="background:#401515; color:#fff;">${data.sec || "비밀 없음"}</div>
+                    </div>
+                </div>
+            </div>`;
+            
+            document.getElementById('view-handout-cards').insertAdjacentHTML('beforeend', cardHtml);
+        }
+
+        // 메인 탭 전환
         function switchTab(tabName, clickedButton) {
             document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
@@ -357,7 +447,6 @@
 
         // 주사위
         function rollDice() {
-            const is1D6 = Math.random() < 0.5; // 간단히 1d6인지 2d6인지 구분용 (현재는 무조건 2d6)
             const d1 = Math.floor(Math.random() * 6) + 1;
             const d2 = Math.floor(Math.random() * 6) + 1;
             const total = d1 + d2;
