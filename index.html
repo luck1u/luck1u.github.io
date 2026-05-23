@@ -2,9 +2,9 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>인세인 GM-less 서포터</title>
+    <title>inSANE GM-less 서포터</title>
     <style>
-        /* 화면 전체 디자인 (보내주신 스크린샷 느낌의 다크 테마) */
+        /* 화면 전체 디자인 (다크 테마) */
         body { 
             margin: 0; padding: 0; 
             background-color: #0b0c0c; color: #e0e0e0; 
@@ -15,52 +15,62 @@
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid #1f2323;
         }
-        .logo { color: #e63946; font-weight: bold; font-size: 20px; }
+        .logo { color: #e63946; font-weight: bold; font-size: 22px; letter-spacing: 1px; }
         
-        /* 상단 메뉴(내비게이션) */
+        /* 상단 메뉴(내비게이션) - 개수가 많아져 정렬 조정 */
+        nav { display: flex; gap: 5px; flex-wrap: wrap; }
         nav button {
             background: none; border: none; color: #8a8f8f;
-            padding: 10px 15px; font-size: 15px; cursor: pointer;
+            padding: 8px 12px; font-size: 14px; cursor: pointer;
+            transition: color 0.2s;
         }
-        nav button.active { color: #2a9d8f; font-weight: bold; }
+        nav button.active { color: #2a9d8f; font-weight: bold; border-bottom: 2px solid #2a9d8f; }
         nav button:hover { color: #fff; }
 
-        /* 메인 화면 레이아웃 (본문 + 우측 사이드바) */
+        /* 메인 화면 레이아웃 */
         .container { display: flex; padding: 30px; gap: 30px; }
-        .main-content { flex: 3; background: #121414; padding: 30px; border-radius: 8px; min-height: 500px; }
+        .main-content { flex: 3; background: #121414; padding: 30px; border-radius: 8px; min-height: 550px; }
         .sidebar { flex: 1; background: #0f1c1a; padding: 20px; border-radius: 8px; border: 1px solid #1b4d3e; height: fit-content; }
 
         /* 텍스트 입력창 스타일 */
         textarea {
-            width: 100%; height: 200px; background: #1a1d1d; color: #fff;
+            width: 100%; height: 300px; background: #1a1d1d; color: #fff;
             border: 1px solid #333; padding: 15px; border-radius: 5px; box-sizing: border-box;
-            font-size: 14px; line-height: 1.6; resize: none;
+            font-size: 14px; line-height: 1.6; resize: none; font-family: monospace;
         }
         .btn-parse {
-            background: #e63946; color: white; border: none; padding: 10px 20px;
+            background: #e63946; color: white; border: none; padding: 12px 20px;
             font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 10px; width: 100%;
+            font-weight: bold;
         }
         .btn-parse:hover { background: #d62839; }
 
-        /* 주사위 및 진행 도우미 스타일 */
+        /* 진행 도우미 사이드바 */
         .sidebar h3 { color: #4ade80; margin-top: 0; font-size: 16px; }
-        .dice-box { background: #162a24; padding: 15px; border-radius: 5px; text-align: center; margin-top: 15px; }
-        .btn-dice { background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .dice-box { background: #162a24; padding: 15px; border-radius: 5px; text-align: center; margin-top: 20px; }
+        .btn-dice { background: #2a9d8f; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         #dice-result { margin-top: 10px; font-weight: bold; font-size: 18px; color: #4ade80; }
         
-        /* 텍스트 줄바꿈 유지 */
-        .content-view { white-space: pre-wrap; line-height: 1.8; font-size: 16px; }
+        /* 본문 텍스트 스타일 */
+        .content-view { white-space: pre-wrap; line-height: 1.8; font-size: 16px; color: #d1d5db; }
+        .tab-pane h2 { color: #e63946; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">四誠命 (GM-less)</div>
-        <nav>
-            <button class="menu-btn active" onclick="switchTab('setting')">설정/입력</button>
-            <button class="menu-btn" onclick="switchTab('intro')">개요</button>
-            <button class="menu-btn" onclick="switchTab('pc')">PC</button>
-            <button class="menu-btn" onclick="switchTab('handout')">핸드아웃</button>
+        <div class="logo">inSANE</div>
+        <nav id="main-nav">
+            <button class="menu-btn active" onclick="switchTab('setting', this)">설정/입력</button>
+            <button class="menu-btn" onclick="switchTab('intro', this)">개요</button>
+            <button class="menu-btn" onclick="switchTab('pc', this)">PC</button>
+            <button class="menu-btn" onclick="switchTab('progress', this)">진행 방법</button>
+            <button class="menu-btn" onclick="switchTab('master', this)">마스터 장면</button>
+            <button class="menu-btn" onclick="switchTab('tables', this)">장면표</button>
+            <button class="menu-btn" onclick="switchTab('handout', this)">핸드아웃</button>
+            <button class="menu-btn" onclick="switchTab('npc', this)">NPC</button>
+            <button class="menu-btn" onclick="switchTab('climax', this)">클라이맥스</button>
+            <button class="menu-btn" onclick="switchTab('ending', this)">엔딩</button>
         </nav>
     </header>
 
@@ -68,25 +78,55 @@
         <main class="main-content">
             
             <div id="tab-setting" class="tab-pane">
-                <h2 style="color: #2a9d8f;">시나리오 텍스트 붙여넣기</h2>
-                <p style="color: #8a8f8f; font-size: 14px;">시나리오 원본을 형식에 맞춰 아래에 붙여넣은 후 생성 버튼을 눌러주세요.</p>
-                <textarea id="scenarioInput" placeholder="[개요]&#10;여기에 개요 내용을 적으세요...&#10;&#10;[PC]&#10;여기에 PC 정보를 적으세요...&#10;&#10;[핸드아웃]&#10;여기에 핸드아웃 내용을 적으세요..."></textarea>
-                <button class="btn-parse" onclick="parseScenario()">시나리오 자동 생성 및 세팅</button>
+                <h2 style="color: #2a9d8f;">시나리오 텍스트 입력</h2>
+                <p style="color: #8a8f8f; font-size: 14px;">메모장에 작성된 시나리오 내용을 아래 규칙 태그와 함께 통째로 붙여넣어 주세요.</p>
+                <textarea id="scenarioInput" placeholder="[개요]&#10;여기에 개요 내용...&#10;&#10;[PC]&#10;여기에 PC 정보...&#10;&#10;[진행 방법]&#10;여기에 룰이나 징후...&#10;&#10;[마스터 장면]&#10;여기에 마스터 장면 트리거...&#10;&#10;[장면표]&#10;여기에 무작위 장면표...&#10;&#10;[핸드아웃]&#10;여기에 핸드아웃/비밀...&#10;&#10;[NPC]&#10;여기에 등장인물...&#10;&#10;[클라이맥스]&#10;여기에 클라이맥스 조건...&#10;&#10;[엔딩]&#10;여기에 엔딩 분기..."></textarea>
+                <button class="btn-parse" onclick="parseScenario()">시나리오 자동 분할 및 생성</button>
             </div>
 
             <div id="tab-intro" class="tab-pane" style="display: none;">
-                <h2 style="color: #e63946;">SCENARIO 개요</h2>
-                <div id="view-intro" class="content-view">아직 등록된 내용이 없습니다. '설정/입력' 탭에서 시나리오를 먼저 넣어주세요.</div>
+                <h2>개요</h2>
+                <div id="view-intro" class="content-view">등록된 내용이 없습니다.</div>
             </div>
 
             <div id="tab-pc" class="tab-pane" style="display: none;">
-                <h2>PC 정보</h2>
-                <div id="view-pc" class="content-view">아직 등록된 내용이 없습니다.</div>
+                <h2>PC</h2>
+                <div id="view-pc" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-progress" class="tab-pane" style="display: none;">
+                <h2>진행 방법</h2>
+                <div id="view-progress" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-master" class="tab-pane" style="display: none;">
+                <h2>마스터 장면</h2>
+                <div id="view-master" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-tables" class="tab-pane" style="display: none;">
+                <h2>장면표</h2>
+                <div id="view-tables" class="content-view">등록된 내용이 없습니다.</div>
             </div>
 
             <div id="tab-handout" class="tab-pane" style="display: none;">
-                <h2>핸드아웃 / 비밀</h2>
-                <div id="view-handout" class="content-view">아직 등록된 내용이 없습니다.</div>
+                <h2>핸드아웃</h2>
+                <div id="view-handout" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-npc" class="tab-pane" style="display: none;">
+                <h2>NPC</h2>
+                <div id="view-npc" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-climax" class="tab-pane" style="display: none;">
+                <h2>클라이맥스</h2>
+                <div id="view-climax" class="content-view">등록된 내용이 없습니다.</div>
+            </div>
+
+            <div id="tab-ending" class="tab-pane" style="display: none;">
+                <h2>엔딩</h2>
+                <div id="view-ending" class="content-view">등록된 내용이 없습니다.</div>
             </div>
 
         </main>
@@ -106,56 +146,75 @@
     </div>
 
     <script>
-        // 시나리오 데이터를 저장할 메모리 공간
-        let scenarioData = { intro: "", pc: "", handout: "" };
+        // 텍스트를 분류하여 담아둘 오브젝트 매핑 테이블
+        const targetIds = {
+            '[개요]': 'view-intro',
+            '[PC]': 'view-pc',
+            '[진행 방법]': 'view-progress',
+            '[마스터 장면]': 'view-master',
+            '[장면표]': 'view-tables',
+            '[핸드아웃]': 'view-handout',
+            '[NPC]': 'view-npc',
+            '[클라이맥스]': 'view-climax',
+            '[엔딩]': 'view-ending'
+        };
 
-        // 텍스트를 쪼개서 각 메뉴에 배치하는 분석 엔진
         function parseScenario() {
             const rawText = document.getElementById('scenarioInput').value;
             const lines = rawText.split('\n');
             
+            // 모든 구역 초기화
+            let parsedContents = {
+                '[개요]': "", '[PC]': "", '[진행 방법]': "", '[마스터 장면]': "",
+                '[장면표]': "", '[핸드아웃]': "", '[NPC]': "", '[클라이맥스]': "", '[엔딩]': ""
+            };
+            
             let currentSection = "";
-            let introText = ""; let pcText = ""; let handoutText = "";
 
             lines.forEach(line => {
                 const trimmed = line.trim();
                 
-                // 대괄호를 만나면 섹션을 전환합니다.
-                if (trimmed === '[개요]') { currentSection = "intro"; return; }
-                if (trimmed === '[PC]') { currentSection = "pc"; return; }
-                if (trimmed === '[핸드아웃]') { currentSection = "handout"; return; }
+                // 만약 현재 읽은 줄이 정의된 태그 중 하나라면 섹션을 바꿉니다.
+                if (targetIds[trimmed] !== undefined) {
+                    currentSection = trimmed;
+                    return;
+                }
 
-                // 해당 섹션에 줄 단위로 글을 쌓습니다.
-                if (currentSection === "intro") introText += line + "\n";
-                if (currentSection === "pc") pcText += line + "\n";
-                if (currentSection === "handout") handoutText += line + "\n";
+                // 해당 섹션에 계속 글을 누적합니다.
+                if (currentSection) {
+                    parsedContents[currentSection] += line + "\n";
+                }
             });
 
-            // 분석된 데이터를 화면에 적용
-            document.getElementById('view-intro').innerText = introText || "내용이 없습니다.";
-            document.getElementById('view-pc').innerText = pcText || "내용이 없습니다.";
-            document.getElementById('view-handout').innerText = handoutText || "내용이 없습니다.";
+            // 화면의 각 div 요소에 매칭하여 글자 뿌려주기
+            for (const tag in targetIds) {
+                const viewId = targetIds[tag];
+                document.getElementById(viewId).innerText = parsedContents[tag].trim() || "등록된 내용이 없습니다.";
+            }
             
-            alert("시나리오가 성공적으로 분류되었습니다! '개요' 탭을 눌러 확인해 보세요.");
-            switchTab('intro'); // 자동으로 개요 탭으로 이동합니다.
+            alert("시나리오가 9개 카테고리로 완벽하게 분할되었습니다!");
+            
+            // 첫 번째 메뉴인 '개요' 버튼을 강제로 클릭하는 효과를 주어 화면을 넘깁니다.
+            const introBtn = document.querySelectorAll('.menu-btn')[1];
+            switchTab('intro', introBtn);
         }
 
         // 상단 메뉴 탭 전환 기능
-        function switchTab(tabName) {
-            // 모든 탭 숨기기
+        function switchTab(tabName, clickedButton) {
+            // 모든 본문 화면 숨기기
             document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
-            // 모든 버튼 비활성화 컬러로
+            // 모든 버튼 비활성화 상태로 초기화
             document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
             
-            // 선택한 탭만 켜기
-            document.getElementById('tab-' + tabName).style.style.display = 'block'; // 간혹 브라우저 버그 방지용 코드 수정
-            document.getElementById('tab-' + tabName).style.setProperty('display', 'block');
+            // 선택한 화면 켜기
+            const targetTab = document.getElementById('tab-' + tabName);
+            if(targetTab) targetTab.style.display = 'block';
             
-            // 클릭한 버튼 활성화
-            event.target.classList.add('active');
+            // 클릭한 버튼 하이라이트 효과
+            if(clickedButton) clickedButton.classList.add('active');
         }
 
-        // 주사위 굴리기 로직
+        // 주사위 기능
         function rollDice() {
             const d1 = Math.floor(Math.random() * 6) + 1;
             const d2 = Math.floor(Math.random() * 6) + 1;
